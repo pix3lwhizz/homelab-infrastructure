@@ -1,0 +1,145 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/prowlarr:/config
+      - /mnt/hdd/arr_backups/prowlarr:/config/Backups
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/radarr:/config
+      - /mnt/hdd/data:/data
+      - /mnt/hdd/arr_backups/radarr:/config/Backups
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/sonarr:/config
+      - /mnt/hdd/data:/data
+      - /mnt/hdd/arr_backups/sonarr:/config/Backups
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: seerr
+    environment:
+      - TZ=Europe/Vienna
+    ports:
+      - 127.0.0.1:5055:5055
+    volumes:
+      - /mnt/ssd/seerr:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    user: 1000:1000
+    environment:
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/recyclarr:/config
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Vienna
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/bazarr:/config
+      - /mnt/hdd/data:/data
+      - /mnt/hdd/arr_backups/bazarr:/config/backup
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/lidarr:/config
+      - /mnt/hdd/data:/data
+      - /mnt/hdd/arr_backups/lidarr:/config/Backups
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  bookshelf:
+    image: ghcr.io/pennydreadful/bookshelf:hardcover
+    container_name: bookshelf
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/bookshelf:/config
+      - /mnt/hdd/data:/data
+      - /mnt/hdd/arr_backups/bookshelf:/config/Backups
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

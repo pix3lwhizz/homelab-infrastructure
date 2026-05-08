@@ -1,0 +1,38 @@
+services:
+  homeserver:
+    image: forgejo.ellis.link/continuwuation/continuwuity:latest
+    container_name: matrix
+    restart: always
+    ports:
+      - "127.0.0.1:8448:6167"
+    volumes:
+      - /mnt/ssd/matrix/data:/var/lib/continuwuity
+    environment:
+      - CONTINUWUITY_SERVER_NAME=${MATRIX_DOMAIN}
+      - CONTINUWUITY_DATABASE_PATH=/var/lib/continuwuity
+      - CONTINUWUITY_PORT=6167
+      - CONTINUWUITY_ADDRESS=0.0.0.0
+      - CONTINUWUITY_ALLOW_REGISTRATION=true
+      - CONTINUWUITY_REGISTRATION_TOKEN=${MATRIX_REG_TOKEN}
+      - CONTINUWUITY_ALLOW_FEDERATION=true
+      - CONTINUWUITY_MAX_REQUEST_SIZE=20000000 # 20MB
+      - CONTINUWUITY_TRUSTED_SERVERS=["matrix.org"]
+      - CONTINUWUITY_LOG=warn,state_res=warn
+    labels:
+      - "docker-volume-backup.stop-during-backup=true"
+
+  backup:
+    image: offen/docker-volume-backup:latest
+    container_name: matrix_backup
+    restart: always
+    environment:
+      - BACKUP_CRON_EXPRESSION=0 5 * * *
+      - BACKUP_FILENAME=matrix-backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      - BACKUP_RETENTION_DAYS=14
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/matrix/data:/backup/matrix-data:ro
+      - /mnt/hdd/matrix_backups:/archive
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

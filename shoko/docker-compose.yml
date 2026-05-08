@@ -1,0 +1,33 @@
+services:
+  shoko_server:
+    container_name: shoko
+    image: ghcr.io/shokoanime/server:latest
+    restart: unless-stopped
+    shm_size: 256m
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    ports:
+      - "8111:8111"
+    volumes:
+      - /mnt/ssd/shoko/data:/home/shoko/.shoko
+      - /mnt/hdd/data:/data
+    labels:
+      - "docker-volume-backup.stop-during-backup=true"
+
+  backup:
+    image: offen/docker-volume-backup:latest
+    container_name: shoko_backup
+    restart: always
+    environment:
+      - BACKUP_CRON_EXPRESSION=0 6 * * *
+      - BACKUP_FILENAME=shoko-backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      - BACKUP_RETENTION_DAYS=7
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/shoko/data:/backup/shoko-data:ro
+      - /mnt/hdd/shoko_backups:/archive
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

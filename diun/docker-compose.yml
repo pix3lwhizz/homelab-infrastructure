@@ -1,0 +1,25 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    restart: always
+    volumes:
+      - "/mnt/ssd/diun/data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - "TZ=Europe/Vienna"
+      - "DIUN_WATCH_WORKERS=20"
+      - "DIUN_WATCH_SCHEDULE=0 8 * * *"
+      - "DIUN_WATCH_JITTER=30s"
+      
+      # --- DOCKER SETTINGS ---
+      - "DIUN_PROVIDERS_DOCKER=true"
+      - "DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true" 
+
+      # --- MATRIX NOTIFICATIONS ---
+      - "DIUN_NOTIF_MATRIX_HOMESERVERURL=${MATRIX_HOMESERVERURL}"
+      - "DIUN_NOTIF_MATRIX_USER=${MATRIX_USER}"
+      - "DIUN_NOTIF_MATRIX_PASSWORD=${MATRIX_PASSWORD}"
+      - "DIUN_NOTIF_MATRIX_ROOMID=${MATRIX_ROOMID}"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

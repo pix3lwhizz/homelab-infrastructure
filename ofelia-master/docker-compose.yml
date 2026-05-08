@@ -1,0 +1,12 @@
+services:
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: global_cron
+    restart: always
+    command: daemon --docker
+    environment:
+      - TZ=Europe/Vienna
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

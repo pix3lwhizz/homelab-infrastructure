@@ -1,0 +1,55 @@
+services:
+  npmplus:
+    container_name: npmplus
+    image: docker.io/zoeyvid/npmplus:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - "/mnt/ssd/npmplus:/data"
+    environment:
+      - "TZ=Europe/Vienna"
+      - "ACME_EMAIL=${ACME_EMAIL}"
+      - "LOGROTATE=true"
+      - "CROWDSEC_BOUNCER_KEY=${CROWDSEC_API_KEY}"
+      - "CROWDSEC_URL=http://127.0.0.1:8083"
+    labels:
+      - "docker-volume-backup.stop-during-backup=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  crowdsec:
+    container_name: crowdsec
+    image: crowdsecurity/crowdsec
+    restart: always
+    network_mode: host
+    environment:
+      - "TZ=Europe/Vienna"
+      - "COLLECTIONS=ZoeyVid/npmplus crowdsecurity/appsec-virtual-patching crowdsecurity/nextcloud LePresidente/jellyfin LePresidente/jellyseerr LePresidente/gitea Dominic-Wagner/vaultwarden gauth-fr/immich andreasbrett/paperless-ngx crowdsecurity/sshd crowdsecurity/linux"
+    labels:
+      - "docker-volume-backup.stop-during-backup=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+    volumes:
+      - "/mnt/ssd/crowdsec/conf:/etc/crowdsec"
+      - "/mnt/ssd/crowdsec/data:/var/lib/crowdsec/data"
+      - "/mnt/ssd/npmplus/nginx:/opt/npmplus/nginx:ro"
+      - "/mnt/ssd/gitea/log:/var/log/gitea:ro"
+      - "/var/log/auth.log:/var/log/auth.log:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/mnt/ssd/jellyfin/config/log:/var/log/jellyfin:ro"
+      - "/mnt/ssd/docker_root/volumes/nextcloud_aio_nextcloud/_data/data:/var/log/nextcloud:ro"
+
+  backup:
+    image: offen/docker-volume-backup:latest
+    container_name: npmplus_backup
+    restart: always
+    environment:
+      - BACKUP_CRON_EXPRESSION=0 0 * * *
+      - BACKUP_FILENAME=npm-crowdsec-backup-%Y-%m-%dT%H-%M-%S.tar.gz
+      - BACKUP_RETENTION_DAYS=30
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/npmplus:/backup/npmplus:ro
+      - /mnt/ssd/crowdsec:/backup/crowdsec:ro
+      - /mnt/hdd/npmplus_backups:/archive
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

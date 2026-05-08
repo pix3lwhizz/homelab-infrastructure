@@ -1,0 +1,46 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    environment:
+      DOMAIN: "${VW_DOMAIN}"
+      SIGNUPS_ALLOWED: "false"
+      INVITATIONS_ALLOWED: "true"
+      ADMIN_TOKEN: "${VW_ADMIN_TOKEN}"
+
+      SMTP_HOST: "smtp.eu.mailgun.org"
+      SMTP_PORT: 465
+      SMTP_SECURITY: "force_tls"
+      SMTP_FROM: "${SMTP_FROM_EMAIL}"
+      SMTP_USERNAME: "${SMTP_USERNAME}"
+      SMTP_PASSWORD: "${SMTP_PASSWORD}"
+    volumes:
+      - /mnt/ssd/vaultwarden/:/data/
+    ports:
+      - "127.0.0.1:8082:80"
+
+  vw_backup_sidecar:
+    image: alpine:latest
+    container_name: vaultwarden_backup_worker
+    # keeps container running silently so Ofelia can send commands to it
+    command: tail -f /dev/null
+    volumes:
+      - /mnt/ssd/vaultwarden/:/data
+      - /mnt/hdd/vaultwarden_backups:/backups
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.vw-backup.schedule: "0 0 1 * * *"
+      # The Backup Script:
+      # 1. install tools (sqlite3 + zip)
+      # 2. dump the DB to a temp file (prevents corruption)
+      # 3. zip the Temp DB + Attachments + Config + Keys
+      # 4. clean up temp file
+      # 5. delete backups older than 30 days
+      ofelia.job-exec.vw-backup.command: >
+        sh -c "apk add --no-cache sqlite zip &&
+        sqlite3 /data/db.sqlite3 \".backup '/data/db_dump.sqlite3'\" &&
+        zip -r /backups/vw-backup-$(date +%Y%m%d_%H%M%S).zip /data/db_dump.sqlite3 /data/attachments /data/config.json /data/rsa_key* &&
+        rm /data/db_dump.sqlite3 &&
+        find /backups -name '*.zip' -mtime +30 -delete"
+      com.centurylinklabs.watchtower.enable: true"

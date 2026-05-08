@@ -1,0 +1,11 @@
+services:
+  mautrix-whatsapp:
+    container_name: mautrix-whatsapp
+    image: dock.mau.dev/mautrix/whatsapp:latest
+    restart: unless-stopped
+    ports:
+      - "29318:29318"
+    volumes:
+      - /mnt/ssd/matrix/whatsapp-bridge:/data
+    environment:
+      - TZ=Europe/Vienna

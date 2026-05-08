@@ -1,0 +1,13 @@
+services:
+  metube:
+    image: alexta69/metube
+    container_name: metube
+    restart: unless-stopped
+    ports:
+      - "8084:8081"
+    volumes:
+      - /mnt/hdd/data/youtube:/downloads
+    environment:
+      - 'YTDL_OPTIONS={"format":"bestvideo+bestaudio/best","merge_output_format":"mkv","writethumbnail":true,"writesubtitles":true,"subtitleslangs":["en","de","-live_chat"],"postprocessors":[{"key":"FFmpegMetadata","add_metadata":true,"add_chapters":true},{"key":"FFmpegEmbedSubtitle","already_have_subtitle":false},{"key":"EmbedThumbnail"}]}'
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

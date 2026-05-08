@@ -1,0 +1,62 @@
+version: "3"
+
+networks:
+  gitea:
+    external: false
+
+services:
+  server:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER=git
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=${GITEA_DB_PASS}
+
+      # --- SMTP SETTINGS ---
+      - GITEA__mailer__ENABLED=true
+      - GITEA__mailer__FROM=${GITEA__mailer__FROM:?GITEA__mailer__FROM not set}
+      - GITEA__mailer__PROTOCOL=smtps
+      - GITEA__mailer__SMTP_ADDR=${GITEA__mailer__SMTP_ADDR:?GITEA__mailer__SMTP_ADDR not set}
+      - GITEA__mailer__SMTP_PORT=${GITEA__mailer__SMTP_PORT:?GITEA__mailer__SMTP_PORT not set}
+      - GITEA__mailer__USER=${GITEA__mailer__USER:-apikey}
+      - GITEA__mailer__PASSWD="""${GITEA__mailer__PASSWD:?GITEA__mailer__PASSWD not set}"""
+
+      # --- SSH SETTINGS
+      - GITEA__server__SSH_PORT=57382
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.gitea-backup.schedule: "0 0 2 * * *"
+      ofelia.job-exec.gitea-backup.user: "git"
+      ofelia.job-exec.gitea-backup.command: "bash -c '/usr/local/bin/gitea dump -f /backups/gitea-backup-$(date +%F_%H-%M-%S).zip --type zip'"
+    restart: always
+    networks:
+      - gitea
+    volumes:
+      - /mnt/ssd/gitea/data:/data
+      - /mnt/ssd/gitea/log:/data/gitea/log
+      - /mnt/hdd/gitea_backups:/backups
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "127.0.0.1:3000:3000"
+      - "57382:22"
+    depends_on:
+      - db
+
+  db:
+    image: docker.io/library/postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=${GITEA_DB_PASS}
+      - POSTGRES_DB=gitea
+    networks:
+      - gitea
+    volumes:
+      - /mnt/ssd/gitea/db:/var/lib/postgresql/data

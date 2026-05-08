@@ -1,0 +1,19 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - HOMEPAGE_ALLOWED_HOSTS=${SERVER_IP}:3030,${SERVER_IP},localhost
+    ports:
+      - 3030:3000
+    volumes:
+      - /mnt/ssd/homepage/config:/app/config
+      - /mnt/ssd/homepage/config/images:/app/public/images
+      - /var/run/docker.sock:/var/run/docker.sock:ro 
+      - /mnt/ssd:/mnt/ssd:ro
+      - /mnt/hdd:/mnt/hdd:ro
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

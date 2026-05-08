@@ -1,0 +1,16 @@
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Vienna
+    volumes:
+      - /mnt/ssd/sabnzbd/config:/config
+      - /mnt/hdd/data:/data
+    ports:
+      - 8085:8080
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
