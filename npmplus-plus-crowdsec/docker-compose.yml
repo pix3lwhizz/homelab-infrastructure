@@ -4,14 +4,20 @@ services:
     image: docker.io/zoeyvid/npmplus:latest
     restart: always
     network_mode: host
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - SETGID
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - "/mnt/ssd/npmplus:/data"
     environment:
       - "TZ=Europe/Vienna"
       - "ACME_EMAIL=${ACME_EMAIL}"
       - "LOGROTATE=true"
-      - "CROWDSEC_BOUNCER_KEY=${CROWDSEC_API_KEY}"
-      - "CROWDSEC_URL=http://127.0.0.1:8083"
+      - "ACME_PROFILE=none" # forces classic 90-day certificates
     labels:
       - "docker-volume-backup.stop-during-backup=true"
       - "com.centurylinklabs.watchtower.enable=true"
