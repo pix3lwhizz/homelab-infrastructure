@@ -7,6 +7,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - /mnt/ssd/linkwarden/pgdata:/var/lib/postgresql/data
+      - /mnt/hdd/linkwarden_backups:/backups
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "ofelia.enabled=true"
+      - "ofelia.job-exec.linkwarden-db-backup.schedule=0 30 6 * * *"
+      - "ofelia.job-exec.linkwarden-db-backup.command=sh -c \"pg_dump -U postgres postgres > /backups/db_$$(date +%F).sql && find /backups -name 'db_*.sql' -mtime +30 -delete\""
       
   linkwarden:
     image: ghcr.io/linkwarden/linkwarden:latest 
@@ -20,9 +26,16 @@ services:
       - 4000:3000
     volumes:
       - /mnt/hdd/linkwarden/data:/data/data
+      - /mnt/hdd/linkwarden_backups:/backups
     depends_on:
       - postgres
       - meilisearch
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "ofelia.enabled=true"
+      # Triggers exactly at 6:30 AM
+      - "ofelia.job-exec.linkwarden-data-backup.schedule=0 30 6 * * *"
+      - "ofelia.job-exec.linkwarden-data-backup.command=sh -c \"tar -czf /backups/data_$$(date +%F).tar.gz /data/data && find /backups -name 'data_*.tar.gz' -mtime +30 -delete\""
       
   meilisearch:
     image: getmeili/meilisearch:v1.12.8
@@ -31,3 +44,5 @@ services:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     volumes:
       - /mnt/ssd/linkwarden/meili_data:/meili_data
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
