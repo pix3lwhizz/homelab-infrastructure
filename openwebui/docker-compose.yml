@@ -10,3 +10,6 @@ services:
       - ENABLE_OLLAMA_API=False
     volumes:
       - /mnt/ssd/openwebui:/app/backend/data
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      # TODO: add backup strategy
