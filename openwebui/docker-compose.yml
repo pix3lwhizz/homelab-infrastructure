@@ -7,5 +7,6 @@ services:
       - "3005:8080"
     environment:
       - OLLAMA_BASE_URL=
+      - ENABLE_OLLAMA_API=False
     volumes:
       - /mnt/ssd/openwebui:/app/backend/data
