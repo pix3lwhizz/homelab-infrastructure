@@ -8,6 +8,8 @@ services:
       - /mnt/ssd/jellyfin/config:/config
       - /mnt/ssd/jellyfin/cache:/cache
       - /mnt/hdd/data:/data
+    devices:
+      - /dev/dri:/dev/dri
     restart: 'always'
     environment:
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_URL}
