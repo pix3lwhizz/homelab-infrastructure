@@ -7,13 +7,14 @@ services:
       - TZ=Europe/Vienna
       - FLARESOLVERR_ENABLED=true
       - FLARESOLVERR_URL=http://${SERVER_IP}:8191
-      - DOWNLOAD_AS_CBZ=true 
+      - DOWNLOAD_AS_CBZ=true
     volumes:
       - /mnt/ssd/suwayomi:/home/suwayomi/.local/share/Tachidesk
       - /mnt/hdd/data/media/manga:/home/suwayomi/.local/share/Tachidesk/downloads
       - /mnt/hdd/backups/suwayomi:/home/suwayomi/.local/share/Tachidesk/autobackup
     ports:
-      - "127.0.0.1:4567:4567"
+      - 127.0.0.1:4567:4567
     restart: unless-stopped
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      - com.centurylinklabs.watchtower.enable=true
+networks: {}
