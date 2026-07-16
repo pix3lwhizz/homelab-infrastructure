@@ -1,0 +1,23 @@
+services:
+  tinymediamanager:
+    image: tinymediamanager/tinymediamanager:latest
+    container_name: tinymediamanager
+    environment:
+      - USER_ID=1000
+      - GROUP_ID=1000
+      - ALLOW_DIRECT_VNC=false
+      - LC_ALL=en_US.UTF-8
+      - LANG=en_US.UTF-8
+      - PASSWORD=$PASSWORD
+    volumes:
+      - /mnt/ssd/tmm/:/data
+      - /mnt/hdd/data/custom/movies_custom/:/media/movies
+      - /mnt/hdd/data/custom/tv_custom/:/media/tvshows
+    ports:
+      - 4005:4000
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"   
+        max-size: "20m"
