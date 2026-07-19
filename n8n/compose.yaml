@@ -1,0 +1,28 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - 5678:5678
+    environment:
+      - GENERIC_TIMEZONE=Europe/Vienna
+      - TZ=Europe/Vienna
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+    volumes:
+      - /mnt/ssd/n8n:/home/node/.n8n
+      - /mnt/hdd/n8n:/data/media
+  # Dedicated Memory Bank for the AI Agent
+  n8n-ai-memory-db:
+    image: postgres:16
+    container_name: ai-memory-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=ai_agent
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=chat_history
+    volumes:
+      - /mnt/ssd/n8n/ai-memory:/var/lib/postgresql/data
+networks: {}

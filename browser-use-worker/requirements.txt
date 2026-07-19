@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+browser-use
+langchain-google-genai
+pydantic
+playwright
