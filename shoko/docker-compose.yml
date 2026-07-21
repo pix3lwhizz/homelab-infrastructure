@@ -14,7 +14,7 @@ services:
       - /mnt/ssd/shoko/data:/home/shoko/.shoko
       - /mnt/hdd/data:/data
     labels:
-      - "docker-volume-backup.stop-during-backup=true"
+      - shoko-backup.stop=true
 
   backup:
     image: offen/docker-volume-backup:latest
@@ -25,6 +25,7 @@ services:
       - BACKUP_FILENAME=shoko-backup-%Y-%m-%dT%H-%M-%S.tar.gz
       - BACKUP_RETENTION_DAYS=7
       - TZ=Europe/Vienna
+      - BACKUP_STOP_CONTAINER_LABEL=shoko-backup.stop=true
     volumes:
       - /mnt/ssd/shoko/data:/backup/shoko-data:ro
       - /mnt/hdd/shoko_backups:/archive

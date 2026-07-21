@@ -12,7 +12,7 @@ services:
       - /mnt/ssd/couchdb/data:/opt/couchdb/data
       - /mnt/ssd/couchdb/etc/local.ini:/opt/couchdb/etc/local.d/local.ini
     labels:
-      - "docker-volume-backup.stop-during-backup=true"
+      - couchdb-backup.stop=true
 
   backup:
     image: offen/docker-volume-backup:latest
@@ -23,6 +23,7 @@ services:
       - BACKUP_FILENAME=couchdb-backup-%Y-%m-%dT%H-%M-%S.tar.gz
       - BACKUP_RETENTION_DAYS=30
       - TZ=Europe/Zurich
+      - BACKUP_STOP_CONTAINER_LABEL=couchdb-backup.stop=true
     volumes:
       - /mnt/ssd/couchdb/data:/backup/data:ro
       - /mnt/ssd/couchdb/etc/local.ini:/backup/local.ini:ro
