@@ -19,6 +19,8 @@ services:
       - /mnt/ssd/vaultwarden/:/data/
     ports:
       - "127.0.0.1:8082:80"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   vw_backup_sidecar:
     image: alpine:latest
