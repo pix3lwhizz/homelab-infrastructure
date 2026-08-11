@@ -11,10 +11,10 @@ services:
       - 6881:6881 # Torrent peer port (TCP)
       - 6881:6881/udp # Torrent peer port (UDP)
     environment:
-      - VPN_SERVICE_PROVIDER=protonvpn
+      - VPN_SERVICE_PROVIDER=private internet access
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=${WG_PRIVATE_KEY}
-      - WIREGUARD_ADDRESSES=${WG_ADDRESSES}
+      - VPN_USER=${VPN_USER}
+      - VPN_PASSWORD=${VPN_PASSWORD}
       - SERVER_COUNTRIES=Switzerland
       - VPN_PORT_FORWARDING=on
       - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"random_port\":false,\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'
