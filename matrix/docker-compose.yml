@@ -19,7 +19,7 @@ services:
       - CONTINUWUITY_TRUSTED_SERVERS=["matrix.org"]
       - CONTINUWUITY_LOG=warn,state_res=warn
     labels:
-      - matrix-backup.stop=true
+      - docker-volume-backup.stop-during-backup=matrix
 
   backup:
     image: offen/docker-volume-backup:latest
@@ -30,7 +30,7 @@ services:
       - BACKUP_FILENAME=matrix-backup-%Y-%m-%dT%H-%M-%S.tar.gz
       - BACKUP_RETENTION_DAYS=14
       - TZ=Europe/Vienna
-      - BACKUP_STOP_CONTAINER_LABEL=matrix-backup.stop=true
+      - BACKUP_STOP_DURING_BACKUP_LABEL=matrix
     volumes:
       - /mnt/ssd/matrix/data:/backup/matrix-data:ro
       - /mnt/hdd/matrix_backups:/archive

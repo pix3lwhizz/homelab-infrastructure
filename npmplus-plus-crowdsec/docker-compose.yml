@@ -31,7 +31,7 @@ services:
       - "TZ=Europe/Vienna"
       - "COLLECTIONS=ZoeyVid/npmplus crowdsecurity/appsec-virtual-patching crowdsecurity/nextcloud LePresidente/jellyfin LePresidente/jellyseerr LePresidente/gitea Dominic-Wagner/vaultwarden gauth-fr/immich andreasbrett/paperless-ngx crowdsecurity/sshd crowdsecurity/linux"
     labels:
-      - "npm-backup.stop=true"
+      - "docker-volume-backup.stop-during-backup=npmplus"
       - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - "/mnt/ssd/crowdsec/conf:/etc/crowdsec"
@@ -52,7 +52,7 @@ services:
       - BACKUP_FILENAME=npm-crowdsec-backup-%Y-%m-%dT%H-%M-%S.tar.gz
       - BACKUP_RETENTION_DAYS=30
       - TZ=Europe/Vienna
-      - BACKUP_STOP_CONTAINER_LABEL=npm-backup.stop=true
+      - BACKUP_STOP_DURING_BACKUP_LABEL=npmplus
     volumes:
       - /mnt/ssd/npmplus:/backup/npmplus:ro
       - /mnt/ssd/crowdsec:/backup/crowdsec:ro
