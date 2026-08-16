@@ -20,7 +20,6 @@ services:
       - "ACME_PROFILE=none" # forces classic 90-day certificates
     labels:
       - "npm-backup.stop=true"
-      - "com.centurylinklabs.watchtower.enable=true"
 
   crowdsec:
     container_name: crowdsec
@@ -32,7 +31,6 @@ services:
       - "COLLECTIONS=ZoeyVid/npmplus crowdsecurity/appsec-virtual-patching crowdsecurity/nextcloud LePresidente/jellyfin LePresidente/jellyseerr LePresidente/gitea Dominic-Wagner/vaultwarden gauth-fr/immich andreasbrett/paperless-ngx crowdsecurity/sshd crowdsecurity/linux"
     labels:
       - "docker-volume-backup.stop-during-backup=npmplus"
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - "/mnt/ssd/crowdsec/conf:/etc/crowdsec"
       - "/mnt/ssd/crowdsec/data:/var/lib/crowdsec/data"
@@ -58,5 +56,3 @@ services:
       - /mnt/ssd/crowdsec:/backup/crowdsec:ro
       - /mnt/hdd/npmplus_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

@@ -9,5 +9,3 @@ services:
       - /mnt/hdd/data/youtube:/downloads
     environment:
       - 'YTDL_OPTIONS={"format":"bestvideo+bestaudio/best","merge_output_format":"mkv","writethumbnail":true,"writesubtitles":true, "writedescription":true,"subtitleslangs":["en","de","-live_chat"],"postprocessors":[{"key":"FFmpegMetadata","add_metadata":true,"add_chapters":true},{"key":"FFmpegEmbedSubtitle","already_have_subtitle":false},{"key":"EmbedThumbnail"}]}'
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

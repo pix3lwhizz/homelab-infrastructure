@@ -15,6 +15,4 @@ services:
       - /mnt/ssd:/mnt/ssd:ro
       - /mnt/hdd:/mnt/hdd:ro
     restart: unless-stopped
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
 networks: {}

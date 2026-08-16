@@ -29,5 +29,3 @@ services:
       - /mnt/ssd/couchdb/etc/local.ini:/backup/local.ini:ro
       - /mnt/hdd/couchdb_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

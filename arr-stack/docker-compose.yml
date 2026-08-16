@@ -12,8 +12,6 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -29,8 +27,6 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -46,8 +42,6 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   seerr:
     image: ghcr.io/seerr-team/seerr:latest
@@ -66,8 +60,6 @@ services:
       interval: 15s
       retries: 3
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:8
@@ -78,8 +70,6 @@ services:
     volumes:
       - /mnt/ssd/recyclarr:/config
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -90,8 +80,6 @@ services:
     ports:
       - 8191:8191
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -107,8 +95,6 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
@@ -124,8 +110,6 @@ services:
     ports:
       - 8686:8686
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   bookshelf:
     image: ghcr.io/pennydreadful/bookshelf:hardcover
@@ -141,5 +125,3 @@ services:
     ports:
       - 8787:8787
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

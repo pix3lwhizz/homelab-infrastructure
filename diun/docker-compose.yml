@@ -21,5 +21,3 @@ services:
       - "DIUN_NOTIF_MATRIX_USER=${MATRIX_USER}"
       - "DIUN_NOTIF_MATRIX_PASSWORD=${MATRIX_PASSWORD}"
       - "DIUN_NOTIF_MATRIX_ROOMID=${MATRIX_ROOMID}"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

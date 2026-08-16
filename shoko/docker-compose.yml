@@ -30,5 +30,3 @@ services:
       - /mnt/ssd/shoko/data:/backup/shoko-data:ro
       - /mnt/hdd/shoko_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

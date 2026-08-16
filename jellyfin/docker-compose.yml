@@ -15,5 +15,3 @@ services:
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_URL}
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"

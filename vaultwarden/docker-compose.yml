@@ -19,8 +19,6 @@ services:
       - /mnt/ssd/vaultwarden/:/data/
     ports:
       - "127.0.0.1:8082:80"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   vw_backup_sidecar:
     image: alpine:latest
@@ -45,4 +43,3 @@ services:
         zip -r /backups/vw-backup-$(date +%Y%m%d_%H%M%S).zip /data/db_dump.sqlite3 /data/attachments /data/config.json /data/rsa_key* &&
         rm /data/db_dump.sqlite3 &&
         find /backups -name '*.zip' -mtime +30 -delete"
-      com.centurylinklabs.watchtower.enable: true
