@@ -11,6 +11,7 @@ services:
     volumes:
       - /mnt/ssd/gluetun:/gluetun
     environment:
+      - TZ=Europe/Zurich
       - VPN_SERVICE_PROVIDER=private internet access
       - VPN_TYPE=openvpn
       - VPN_INTERFACE=tun0
