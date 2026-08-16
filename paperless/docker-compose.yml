@@ -1,7 +1,7 @@
 services:
   broker:
-    image: docker.io/library/redis:8
-    container_name: paperless-redis
+    image: docker.io/valkey/valkey:8-alpine
+    container_name: paperless-broker
     restart: unless-stopped
     volumes:
       - /mnt/ssd/paperless/redisdata:/data
@@ -18,7 +18,7 @@ services:
       POSTGRES_PASSWORD: ${PAPERLESS_DB_PASS}
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/paperless-ngx/paperless-ngx:3.0
     container_name: paperless-web
     restart: unless-stopped
     ports:
@@ -32,8 +32,10 @@ services:
       - /mnt/ssd/paperless/export:/usr/src/paperless/export
       - /mnt/ssd/paperless/consume:/usr/src/paperless/consume
     environment:
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_KEY}
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_DBHOST: db
+      PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBPASS: ${PAPERLESS_DB_PASS}
       PAPERLESS_URL: ${PAPERLESS_URL}
       USERMAP_UID: 1000
