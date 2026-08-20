@@ -11,7 +11,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - PUID=1000
       - PGID=1000
-      # - URLS=https://yamtrack.yourdomain.com # Uncomment if you put this behind a reverse proxy later!
+      - REGISTRATION=False
     volumes:
       - /mnt/ssd/yamtrack/db:/yamtrack/db
     ports:
