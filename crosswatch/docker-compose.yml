@@ -1,0 +1,13 @@
+services:
+  crosswatch:
+    image: ghcr.io/cenodude/crosswatch:latest
+    container_name: crosswatch
+    environment:
+      - TZ=Europe/Vienna
+      - APP_UID=1000
+      - APP_GID=1000
+    volumes:
+      - /mnt/ssd/crosswatch/config:/config
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
