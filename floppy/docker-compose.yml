@@ -13,6 +13,7 @@ services:
       - DEMO_ACCOUNT_ENABLED=False
       - TZ=Europe/Vienna
       - TMDB_API=${TMDB_API_KEY}
+      - TVDB_API_KEY=${TVDB_API_KEY}
       - URLS=${FLOPPY_URL}
       - PUID=1000
       - PGID=1000
