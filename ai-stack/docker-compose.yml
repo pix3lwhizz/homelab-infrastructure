@@ -1,0 +1,74 @@
+services:
+  9router:
+    image: decolua/9router:latest
+    container_name: 9router
+    restart: unless-stopped
+    ports:
+      - "20128:20128"
+    volumes:
+      - /mnt/ssd/ai-stack/9router/data:/app/data
+    environment:
+      DATA_DIR: /app/data
+      PORT: "20128"
+      HOSTNAME: "0.0.0.0"
+      NODE_ENV: production
+      HEADROOM_URL: http://headroom-proxy:8787
+    depends_on:
+      - headroom-proxy
+    networks:
+      - ai_net
+
+  headroom-proxy:
+    image: ghcr.io/headroomlabs-ai/headroom:latest
+    container_name: headroom-proxy
+    command: ["--host", "0.0.0.0"]
+    restart: unless-stopped
+    environment:
+      - HEADROOM_HOST=0.0.0.0
+      - HOME=/home/nonroot
+      - HEADROOM_WORKSPACE_DIR=/home/nonroot/.headroom
+      - HEADROOM_CONFIG_DIR=/home/nonroot/.headroom/config
+      - HEADROOM_PROXY_TOKEN=${HEADROOM_PROXY_TOKEN}
+    ports:
+      - "127.0.0.1:9898:8787"
+    volumes:
+      - /mnt/ssd/ai-stack/headroom/workspace:/home/nonroot/.headroom
+    depends_on:
+      - qdrant
+      - neo4j
+    networks:
+      - ai_net
+
+  qdrant:
+    image: qdrant/qdrant:v1.17.1
+    container_name: headroom-qdrant
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
+    volumes:
+      - /mnt/ssd/ai-stack/headroom/qdrant:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - ai_net
+
+  neo4j:
+    image: neo4j:5.26
+    container_name: headroom-neo4j
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    volumes:
+      - /mnt/ssd/ai-stack/headroom/neo4j:/data
+    environment:
+      - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_PLUGINS=["apoc"]
+    networks:
+      - ai_net
+
+networks:
+  ai_net:
+    name: ai_net
+    driver: bridge
