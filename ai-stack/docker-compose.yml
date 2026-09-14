@@ -21,7 +21,7 @@ services:
   headroom-proxy:
     image: ghcr.io/headroomlabs-ai/headroom:latest
     container_name: headroom-proxy
-    command: ["--host", "0.0.0.0"]
+    command: ["--host", "0.0.0.0", "--memory"]
     restart: unless-stopped
     environment:
       - HEADROOM_HOST=0.0.0.0
@@ -29,8 +29,11 @@ services:
       - HEADROOM_WORKSPACE_DIR=/home/nonroot/.headroom
       - HEADROOM_CONFIG_DIR=/home/nonroot/.headroom/config
       - HEADROOM_PROXY_TOKEN=${HEADROOM_PROXY_TOKEN}
+      - HEADROOM_QDRANT_URL=http://headroom-qdrant:6333
+      - HEADROOM_NEO4J_URL=bolt://headroom-neo4j:7687
+      - NEO4J_AUTH=${NEO4J_AUTH}
     ports:
-      - "127.0.0.1:9898:8787"
+      - "127.0.0.1:8787:8787"
     volumes:
       - /mnt/ssd/ai-stack/headroom/workspace:/home/nonroot/.headroom
     depends_on:
