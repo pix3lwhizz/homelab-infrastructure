@@ -34,7 +34,7 @@ services:
       - HEADROOM_NEO4J_URL=bolt://headroom-neo4j:7687
       - NEO4J_AUTH=${NEO4J_AUTH}
     ports:
-      - "9898:8787"
+      - "127.0.0.1:9898:8787"
     volumes:
       - /mnt/ssd/ai-stack/headroom/workspace:/home/nonroot/.headroom
     depends_on:
@@ -63,6 +63,28 @@ services:
       - NEO4J_PLUGINS=["apoc"]
     networks:
       - ai_net
+
+  hermes-agent:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes-agent
+    restart: unless-stopped
+    command: gateway run
+    shm_size: '1gb'
+    networks:
+      - ai_net
+    ports:
+      - "8642:8642" # API Server
+      - "9119:9119" # Web Dashboard
+    volumes:
+      - /mnt/ssd/ai-stack/hermes/data:/opt/data
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
+      - HERMES_DASHBOARD=1
+      - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=${HERMES_DASHBOARD_USER}
+      - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_PASSWORD}
+      - PUID=1000
+      - PGID=1000
 
 networks:
   ai_net:
