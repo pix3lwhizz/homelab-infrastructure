@@ -78,6 +78,7 @@ services:
     volumes:
       - /mnt/ssd/ai-stack/hermes/data:/opt/data
     environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
       - HERMES_DASHBOARD=1
