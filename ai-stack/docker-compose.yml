@@ -34,7 +34,7 @@ services:
       - HEADROOM_NEO4J_URL=bolt://headroom-neo4j:7687
       - NEO4J_AUTH=${NEO4J_AUTH}
     ports:
-      - "127.0.0.1:9898:8787"
+      - "9898:8787"
     volumes:
       - /mnt/ssd/ai-stack/headroom/workspace:/home/nonroot/.headroom
     depends_on:
