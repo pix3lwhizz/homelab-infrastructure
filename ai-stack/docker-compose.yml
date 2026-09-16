@@ -25,6 +25,7 @@ services:
     command: ["--host", "0.0.0.0", "--memory"]
     restart: unless-stopped
     environment:
+      - HEADROOM_COMPRESS_ALLOW_REMOTE=1
       - HEADROOM_HOST=0.0.0.0
       - HOME=/home/nonroot
       - HEADROOM_WORKSPACE_DIR=/home/nonroot/.headroom
