@@ -29,7 +29,6 @@ services:
       - HOME=/home/nonroot
       - HEADROOM_WORKSPACE_DIR=/home/nonroot/.headroom
       - HEADROOM_CONFIG_DIR=/home/nonroot/.headroom/config
-      - HEADROOM_PROXY_TOKEN=${HEADROOM_PROXY_TOKEN}
       - HEADROOM_QDRANT_URL=http://headroom-qdrant:6333
       - HEADROOM_NEO4J_URL=bolt://headroom-neo4j:7687
       - NEO4J_AUTH=${NEO4J_AUTH}
