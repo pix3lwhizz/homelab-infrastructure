@@ -77,14 +77,36 @@ services:
       - "9119:9119" # Web Dashboard
     volumes:
       - /mnt/ssd/ai-stack/hermes/data:/opt/data
+      - /srv/stacks-mirror:/opt/stacks:ro
+      - /srv/backup-report.txt:/opt/backup-report.txt:ro
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
+      - DOCKER_HOST=tcp://docker-socket-proxy:2375
       - HERMES_DASHBOARD=1
       - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=${HERMES_DASHBOARD_USER}
       - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_PASSWORD}
       - PUID=1000
       - PGID=1000
+  
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    container_name: docker-socket-proxy
+    restart: unless-stopped
+    environment:
+      CONTAINERS: 1
+      IMAGES: 1
+      VOLUMES: 1
+      NETWORKS: 1
+      EVENTS: 1
+      POST: 0
+      EXEC: 0
+      BUILD: 0
+      SYSTEM: 0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - hermes_net
 
 networks:
   ai_net:
