@@ -23,6 +23,7 @@ services:
   vw_backup_sidecar:
     image: alpine:latest
     container_name: vaultwarden_backup_worker
+    restart: unless-stopped
     # keeps container running silently so Ofelia can send commands to it
     command: tail -f /dev/null
     volumes:
