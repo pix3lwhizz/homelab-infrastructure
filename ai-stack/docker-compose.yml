@@ -80,6 +80,7 @@ services:
       - /mnt/ssd/ai-stack/hermes/data:/opt/data
       - /srv/stacks-mirror:/opt/stacks:ro
       - /srv/backup-report.txt:/opt/backup-report.txt:ro
+      - /mnt/hdd/data/hermes:/opt/media
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
