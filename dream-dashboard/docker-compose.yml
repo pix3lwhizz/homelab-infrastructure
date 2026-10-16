@@ -6,7 +6,7 @@ services:
     ports:
       - "8484:8080"
     volumes:
-      - - /mnt/ssd/ai-stack/hermes/data/dashboard-site:/usr/share/nginx/html:ro
+      - /mnt/ssd/ai-stack/hermes/data/dashboard-site:/usr/share/nginx/html:ro
     read_only: true
     tmpfs:
       - /tmp
