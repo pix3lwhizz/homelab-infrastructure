@@ -1,0 +1,16 @@
+services:
+  dream-dashboard:
+    image: nginxinc/nginx-unprivileged:alpine
+    container_name: dream-dashboard
+    restart: unless-stopped
+    ports:
+      - "8484:8080"
+    volumes:
+      - /opt/data/dashboard-site:/usr/share/nginx/html:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
