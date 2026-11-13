@@ -82,6 +82,7 @@ services:
       - /srv/stacks-mirror:/opt/stacks:ro
       - /srv/backup-report.txt:/opt/backup-report.txt:ro
       - /mnt/hdd/data/hermes:/opt/media
+      - /mnt/hdd/data/media/music:/media/music
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
