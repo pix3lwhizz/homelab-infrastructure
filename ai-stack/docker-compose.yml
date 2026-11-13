@@ -83,6 +83,7 @@ services:
       - /srv/backup-report.txt:/opt/backup-report.txt:ro
       - /mnt/hdd/data/hermes:/opt/media
       - /mnt/hdd/data/media/music:/media/music
+      - /mnt/hdd/data/custom/music_custom:/media/custom
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}
