@@ -26,6 +26,8 @@ services:
       - BACKUP_RETENTION_DAYS=7
       - TZ=Europe/Vienna
       - BACKUP_STOP_DURING_BACKUP_LABEL=shoko
+      - NOTIFICATION_LEVEL=info
+      - NOTIFICATION_URLS=${NOTIFICATION_URLS}
     volumes:
       - /mnt/ssd/shoko/data:/backup/shoko-data:ro
       - /mnt/hdd/shoko_backups:/archive

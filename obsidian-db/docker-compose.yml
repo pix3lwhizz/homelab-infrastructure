@@ -24,6 +24,8 @@ services:
       - BACKUP_RETENTION_DAYS=30
       - TZ=Europe/Zurich
       - BACKUP_STOP_DURING_BACKUP_LABEL=couchdb
+      - NOTIFICATION_LEVEL=info
+      - NOTIFICATION_URLS=${NOTIFICATION_URLS}
     volumes:
       - /mnt/ssd/couchdb/data:/backup/data:ro
       - /mnt/ssd/couchdb/etc/local.ini:/backup/local.ini:ro

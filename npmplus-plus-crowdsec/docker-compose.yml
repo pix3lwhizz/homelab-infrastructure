@@ -51,6 +51,8 @@ services:
       - BACKUP_RETENTION_DAYS=30
       - TZ=Europe/Vienna
       - BACKUP_STOP_DURING_BACKUP_LABEL=npmplus
+      - NOTIFICATION_LEVEL=info
+      - NOTIFICATION_URLS=${NOTIFICATION_URLS}
     volumes:
       - /mnt/ssd/npmplus:/backup/npmplus:ro
       - /mnt/ssd/crowdsec:/backup/crowdsec:ro
