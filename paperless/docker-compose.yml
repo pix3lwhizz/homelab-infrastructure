@@ -48,3 +48,20 @@ services:
       ofelia.enabled: "true"
       ofelia.job-exec.paperless-export.schedule: "0 0 23 * * *"
       ofelia.job-exec.paperless-export.command: "document_exporter /usr/src/paperless/export -d"
+  
+  backup:
+    image: offen/docker-volume-backup:latest
+    container_name: paperless-backup
+    restart: always
+    environment:
+      - BACKUP_CRON_EXPRESSION=30 23 * * *
+      - BACKUP_SOURCES=/backup/export
+      - BACKUP_FILENAME=paperless-export-%Y-%m-%dT%H-%M-%S.tar.gz
+      - BACKUP_RETENTION_DAYS=14
+      - TZ=Europe/Vienna
+      - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+    volumes:
+      - /mnt/ssd/paperless/export:/backup/export:ro
+      - /mnt/hdd/paperless_backups:/archive
+    labels:
+      - docker-volume-backup.prune-post=${DOCKER_BACKUP}
