@@ -60,8 +60,11 @@ services:
       - BACKUP_RETENTION_DAYS=14
       - TZ=Europe/Vienna
       - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+      - EXEC_LABEL=paperless
     volumes:
       - /mnt/ssd/paperless/export:/backup/export:ro
       - /mnt/hdd/paperless_backups:/archive
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
+      - docker-volume-backup.exec-label=paperless
       - docker-volume-backup.prune-post=${DOCKER_BACKUP}
