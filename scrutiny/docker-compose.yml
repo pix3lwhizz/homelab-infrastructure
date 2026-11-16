@@ -9,6 +9,7 @@ services:
 
     cap_add:
       - SYS_RAWIO
+      - SYS_ADMIN
 
     ports:
       - "${SERVER_IP}:8095:8080"
@@ -20,6 +21,6 @@ services:
 
     devices:
       - /dev/sda
-      - /dev/nvme0n1
+      - /dev/nvme0
 
 networks: {}
