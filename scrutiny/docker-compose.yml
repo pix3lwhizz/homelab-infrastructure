@@ -6,6 +6,7 @@ services:
 
     environment:
       - TZ=Europe/Vienna
+      - COLLECTOR_CRON_SCHEDULE=${CRON_TIME}
 
     cap_add:
       - SYS_RAWIO
