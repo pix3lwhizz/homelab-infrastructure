@@ -1,0 +1,25 @@
+services:
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:v0.10.0-omnibus
+    container_name: scrutiny
+    restart: unless-stopped
+
+    environment:
+      - TZ=Europe/Vienna
+
+    cap_add:
+      - SYS_RAWIO
+
+    ports:
+      - "${SERVER_IP}:8095:8080"
+
+    volumes:
+      - /mnt/ssd/scrutiny/config:/opt/scrutiny/config
+      - /mnt/ssd/scrutiny/influxdb:/opt/scrutiny/influxdb
+      - /run/udev:/run/udev:ro
+
+    devices:
+      - /dev/sda
+      - /dev/nvme0n1
+
+networks: {}
