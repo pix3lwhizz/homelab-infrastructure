@@ -18,3 +18,27 @@ services:
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_URL}
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    labels:
+      - docker-volume-backup.stop-during-backup=jellyfin
+  
+  backup:
+    image: offen/docker-volume-backup:latest
+    container_name: jellyfin_backup
+    restart: always
+    environment:
+      - BACKUP_CRON_EXPRESSION=30 3 * * *
+      - BACKUP_SOURCES=/backup/jellyfin-config
+      - BACKUP_FILENAME=jellyfin-config-%Y-%m-%dT%H-%M-%S.tar.gz
+      - BACKUP_RETENTION_DAYS=7
+      - TZ=Europe/Vienna
+      - BACKUP_STOP_DURING_BACKUP_LABEL=jellyfin
+      - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+      - EXEC_LABEL=jellyfin
+      - BACKUP_EXCLUDE_REGEXP="/(metadata|log|temp|root|plugins\.old-1011|data/subtitles|library\.db\.old)/"
+    volumes:
+      - /mnt/ssd/jellyfin/config:/backup/jellyfin-config:ro
+      - /mnt/hdd/backups:/archive
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - docker-volume-backup.exec-label=jellyfin
+      - docker-volume-backup.prune-post=${DOCKER_BACKUP}
