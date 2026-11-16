@@ -81,6 +81,7 @@ services:
       - /mnt/ssd/ai-stack/hermes/data:/opt/data
       - /srv/stacks-mirror:/opt/stacks:ro
       - /srv/backup-mirror:/opt/backup:ro
+      - /mnt/hdd/data:/data:ro
       - /mnt/hdd/data/hermes:/opt/media
       - /mnt/hdd/data/media/music:/media/music
       - /mnt/hdd/data/custom/music_custom:/media/custom
