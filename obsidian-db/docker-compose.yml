@@ -25,10 +25,12 @@ services:
       - TZ=Europe/Zurich
       - BACKUP_STOP_DURING_BACKUP_LABEL=couchdb
       - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+      - EXEC_LABEL=couchdb
     volumes:
       - /mnt/ssd/couchdb/data:/backup/data:ro
       - /mnt/ssd/couchdb/etc/local.ini:/backup/local.ini:ro
       - /mnt/hdd/couchdb_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
+      - docker-volume-backup.exec-label=couchdb
       - docker-volume-backup.prune-post=${DOCKER_BACKUP}

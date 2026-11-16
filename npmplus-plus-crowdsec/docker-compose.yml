@@ -52,10 +52,12 @@ services:
       - TZ=Europe/Vienna
       - BACKUP_STOP_DURING_BACKUP_LABEL=npmplus
       - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+      - EXEC_LABEL=npmplus
     volumes:
       - /mnt/ssd/npmplus:/backup/npmplus:ro
       - /mnt/ssd/crowdsec:/backup/crowdsec:ro
       - /mnt/hdd/npmplus_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
+      - docker-volume-backup.exec-label=npmplus
       - docker-volume-backup.prune-post=${DOCKER_BACKUP}

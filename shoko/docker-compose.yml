@@ -27,9 +27,11 @@ services:
       - TZ=Europe/Vienna
       - BACKUP_STOP_DURING_BACKUP_LABEL=shoko
       - NOTIFICATION_URLS=${NOTIFICATION_URLS}
+      - EXEC_LABEL=shoko
     volumes:
       - /mnt/ssd/shoko/data:/backup/shoko-data:ro
       - /mnt/hdd/shoko_backups:/archive
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
+      - docker-volume-backup.exec-label=shoko
       - docker-volume-backup.prune-post=${DOCKER_BACKUP}
