@@ -34,7 +34,7 @@ services:
       - BACKUP_STOP_DURING_BACKUP_LABEL=jellyfin
       - NOTIFICATION_URLS=${NOTIFICATION_URLS}
       - EXEC_LABEL=jellyfin
-      - BACKUP_EXCLUDE_REGEXP="/(metadata|log|temp|root|plugins\.old-1011|data/subtitles|library\.db\.old)/"
+      - BACKUP_EXCLUDE_REGEXP=/(metadata|log|temp|root|plugins\.old-1011|subtitles)/|library\.db\.old
     volumes:
       - /mnt/ssd/jellyfin/config:/backup/jellyfin-config:ro
       - /mnt/hdd/backups:/archive
