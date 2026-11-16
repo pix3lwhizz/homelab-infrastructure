@@ -12,56 +12,7 @@ services:
       PORT: "20128"
       HOSTNAME: "0.0.0.0"
       NODE_ENV: production
-      HEADROOM_URL: http://headroom-proxy:8787
       INITIAL_PASSWORD: "${INITIAL_PASSWORD}"
-    depends_on:
-      - headroom-proxy
-    networks:
-      - ai_net
-
-  headroom-proxy:
-    image: ghcr.io/headroomlabs-ai/headroom:latest
-    container_name: headroom-proxy
-    command: ["--host", "0.0.0.0", "--memory"]
-    restart: unless-stopped
-    environment:
-      - HEADROOM_COMPRESS_ALLOW_REMOTE=1
-      - HEADROOM_HOST=0.0.0.0
-      - HEADROOM_ALLOW_UNAUTHENTICATED_BIND=1
-      - HOME=/home/nonroot
-      - HEADROOM_WORKSPACE_DIR=/home/nonroot/.headroom
-      - HEADROOM_CONFIG_DIR=/home/nonroot/.headroom/config
-      - HEADROOM_QDRANT_URL=http://headroom-qdrant:6333
-      - HEADROOM_NEO4J_URL=bolt://headroom-neo4j:7687
-      - NEO4J_AUTH=${NEO4J_AUTH}
-    ports:
-      - "127.0.0.1:9898:8787"
-    volumes:
-      - /mnt/ssd/ai-stack/headroom/workspace:/home/nonroot/.headroom
-    depends_on:
-      - headroom-qdrant
-      - headroom-neo4j
-    networks:
-      - ai_net
-
-  headroom-qdrant:
-    image: qdrant/qdrant:v1.17.1
-    container_name: headroom-qdrant
-    restart: unless-stopped
-    volumes:
-      - /mnt/ssd/ai-stack/headroom/qdrant:/qdrant/storage
-    networks:
-      - ai_net
-
-  headroom-neo4j:
-    image: neo4j:5.26
-    container_name: headroom-neo4j
-    restart: unless-stopped
-    volumes:
-      - /mnt/ssd/ai-stack/headroom/neo4j:/data
-    environment:
-      - NEO4J_AUTH=${NEO4J_AUTH}
-      - NEO4J_PLUGINS=["apoc"]
     networks:
       - ai_net
 
