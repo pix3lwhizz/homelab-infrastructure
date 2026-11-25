@@ -4,30 +4,29 @@ services:
     container_name: 9router
     restart: unless-stopped
     ports:
-      - "20128:20128"
+      - 20128:20128
     volumes:
       - /mnt/ssd/ai-stack/9router/data:/app/data
     environment:
       DATA_DIR: /app/data
       PORT: "20128"
-      HOSTNAME: "0.0.0.0"
+      HOSTNAME: 0.0.0.0
       NODE_ENV: production
-      INITIAL_PASSWORD: "${INITIAL_PASSWORD}"
+      INITIAL_PASSWORD: ${INITIAL_PASSWORD}
     networks:
       - ai_net
-
   hermes-agent:
     image: nousresearch/hermes-agent:latest
     container_name: hermes-agent
     restart: unless-stopped
     command: gateway run
-    shm_size: '1gb'
+    shm_size: 1gb
     networks:
       - ai_net
       - hermes_net
     ports:
-      - "8642:8642" # API Server
-      - "9119:9119" # Web Dashboard
+      - 8642:8642 # API Server
+      - 9119:9119 # Web Dashboard
     volumes:
       - /mnt/ssd/ai-stack/hermes/data:/opt/data
       - /srv/stacks-mirror:/opt/stacks:ro
@@ -36,7 +35,7 @@ services:
       - /mnt/hdd/data/hermes:/opt/media
       - /mnt/hdd/data/media/music:/media/music
       - /mnt/hdd/data/custom/music_custom:/media/custom
-      - /mnt/hdd/data/custom/personal_and_web/YouTube:/opt/youtube
+      - /mnt/hdd/data/custom/personal_and_web:/media/personal_and_web
       - /mnt/ssd/homepage/config:/opt/homepage
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
@@ -47,7 +46,6 @@ services:
       - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_PASSWORD}
       - PUID=1000
       - PGID=1000
-  
   docker-socket-proxy:
     image: tecnativa/docker-socket-proxy:v0.5.0
     container_name: docker-socket-proxy
@@ -66,7 +64,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - hermes_net
-
 networks:
   ai_net:
     name: ai_net
